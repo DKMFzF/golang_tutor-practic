@@ -25,6 +25,29 @@ func main() {
 	fmt.Println(noPanic)
 	fmt.Println(len(noPanic))
 	fmt.Println(cap(noPanic))
+
+	fmt.Println("----------")
+
+	const sizeMatrix = 3
+	matrix := make([][]int, sizeMatrix)
+
+	// обычный цикл for
+	counter := 0
+	for x := 0; x < sizeMatrix; x++ {
+		matrix[x] = make([]int, sizeMatrix)
+		for y := 0; y < sizeMatrix; y++ {
+			counter++
+			matrix[x][y] = counter
+		}
+		fmt.Println(matrix[x])
+	}
+
+	// цикл while типо
+	count := 0
+	for count < 10 {
+		count++
+	}
+	fmt.Println(count)
 }
 
 func printMsg(msg []string) (string error) {
