@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"math"
 )
@@ -56,7 +57,7 @@ func main() {
 	printObject(square)
 	printObject(circle)
 
-	fmt.Println()
+	fmt.Println(lenString(123))
 }
 
 func printShapeArea(s Shape) {
@@ -77,4 +78,13 @@ func printObject(i interface{}) {
 	default:
 		fmt.Println("unknown", value)
 	}
+}
+
+// функция которая привеодит интерфейс к строку
+func lenString(i interface{}) (int, error) {
+	str, ok := i.(string)
+	if ok {
+		return len(str), nil
+	}
+	return 0, errors.New("не удалось привести интерфейс к строке")
 }
