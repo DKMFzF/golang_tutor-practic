@@ -23,4 +23,14 @@ func main() {
 	for kay, item := range users {
 		fmt.Println(kay, item)
 	}
+
+	// Добавить в мапу
+	fmt.Println("Было ->", users)
+	users["Kostia"] = 5
+	fmt.Println("Стало ->", users)
+
+	// удаление значения из мапы
+	fmt.Println("Было ->", users)
+	delete(users, "Alecsandr")
+	fmt.Println("Стало ->", users)
 }
