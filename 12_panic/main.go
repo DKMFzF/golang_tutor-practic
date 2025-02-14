@@ -8,7 +8,7 @@ import (
 
 func main() {
 
-	defer handlerPanic()
+	defer handlerPanic() // функция спасения проги от угрозы паники
 
 	messages := []string{
 		"msg1",
