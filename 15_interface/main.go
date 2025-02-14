@@ -6,8 +6,18 @@ import (
 	"math"
 )
 
-type Shape interface {
+// композиция интерфейсов
+type ShapeWithArea interface {
 	Area() float32
+}
+
+type ShapeWithPerimetr interface {
+	Perimetr() float32
+}
+
+type Shape interface {
+	ShapeWithArea
+	ShapeWithPerimetr
 }
 
 // структура Квадрата
@@ -19,6 +29,10 @@ type Square struct {
 func (s *Square) Area() float32 {
 	s.area = s.sideLen * s.sideLen
 	return s.area
+}
+
+func (s *Square) Perimetr() float32 {
+	return s.sideLen * 4
 }
 
 func newSquare(sideLen float32) *Square {
@@ -44,6 +58,10 @@ func (c *Circle) Area() float32 {
 	return c.area
 }
 
+func (c *Circle) Perimetr() float32 {
+	return c.radius * 2 * math.Pi
+}
+
 func main() {
 	square := newSquare(2.0)
 	circle := newCircle(2.0)
@@ -54,6 +72,9 @@ func main() {
 	printShapeArea(square)
 	printShapeArea(circle)
 
+	printShapePerimetr(square)
+	printShapePerimetr(circle)
+
 	printObject(square)
 	printObject(circle)
 
@@ -62,6 +83,10 @@ func main() {
 
 func printShapeArea(s Shape) {
 	fmt.Println(s.Area())
+}
+
+func printShapePerimetr(s Shape) {
+	fmt.Println(s.Perimetr())
 }
 
 func printObject(i interface{}) {
