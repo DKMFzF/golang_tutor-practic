@@ -55,6 +55,8 @@ func main() {
 
 	printObject(square)
 	printObject(circle)
+
+	fmt.Println()
 }
 
 func printShapeArea(s Shape) {
@@ -62,14 +64,17 @@ func printShapeArea(s Shape) {
 }
 
 func printObject(i interface{}) {
-	switch t := i.(type) {
+	// конструкция type switch
+	// конструкция которая берёт значения из интерфейса
+	// и передаёт её в переменную value
+	switch value := i.(type) {
 	case int:
-		fmt.Println("int", t)
+		fmt.Println("int", value)
 	case bool:
-		fmt.Println("bool", t)
+		fmt.Println("bool", value)
 	case string:
-		fmt.Println("string", t)
+		fmt.Println("string", value)
 	default:
-		fmt.Println("unknown", t)
+		fmt.Println("unknown", value)
 	}
 }
