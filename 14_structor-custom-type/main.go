@@ -8,13 +8,25 @@ func (a Age) isAdult() bool {
 	return a >= 18
 }
 
+type Weight int
+
+func (w Weight) isFatHuman() bool {
+	return w >= 100
+}
+
+type Height int
+
+func (h Height) isLongHuman() bool {
+	return h > 180
+}
+
 // структура которую можно использовать везде
 type User struct {
 	name   string
 	sex    string
 	age    Age
-	weight int
-	height int
+	weight Weight
+	height Height
 }
 
 // конструктор для User
@@ -23,8 +35,8 @@ func NewUser(name, sex string, age, weight, height int) User {
 		name:   name,
 		sex:    sex,
 		age:    Age(age), // приводим тип к int
-		weight: weight,
-		height: height,
+		weight: Weight(weight),
+		height: Height(height),
 	}
 }
 
@@ -32,16 +44,16 @@ func NewUser(name, sex string, age, weight, height int) User {
 // ресивер может быть как по значениею так и ссылкой
 // Когда мы передаём значение, то мы копируем
 // Когда мы передаём ссылку то копируется адресс
-func (u *User) printUserInfo() {
-	fmt.Println(u.name, u.sex, u.age, u.weight, u.height)
-}
-
 func (u *User) getUserName() string {
 	return u.name
 }
 
 func (u *User) setUserName(name string) {
 	u.name = name
+}
+
+func (u *User) printUserInfo() {
+	fmt.Println(u.name, u.sex, u.age, u.weight, u.height)
 }
 
 // структура DataBase
@@ -84,8 +96,22 @@ func main() {
 	db.m["Kirill"] = user2.sex
 	fmt.Println(db.m["Kirill"])
 
-	// проверка на возраст
+	// проверки
 	if user1.age.isAdult() {
 		fmt.Println("user1 is adult")
+	} else {
+		fmt.Println("user1 is not adult")
+	}
+
+	if user1.weight.isFatHuman() {
+		fmt.Println("user1 is fat")
+	} else {
+		fmt.Println("user1 is not fat")
+	}
+
+	if user1.height.isLongHuman() {
+		fmt.Println("user1 is long")
+	} else {
+		fmt.Println("user1 is not long")
 	}
 }
