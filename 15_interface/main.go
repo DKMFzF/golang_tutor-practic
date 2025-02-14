@@ -78,7 +78,14 @@ func main() {
 	printObject(square)
 	printObject(circle)
 
+	// приведение типов
 	fmt.Println(lenString(123))
+	var a interface{} = 10
+	if m, ok := a.(int); ok {
+		fmt.Println(m)
+	} else {
+		fmt.Println("не удалось привести интерфейс к int")
+	}
 }
 
 func printShapeArea(s Shape) {
@@ -107,8 +114,7 @@ func printObject(i interface{}) {
 
 // функция которая привеодит интерфейс к строку
 func lenString(i interface{}) (int, error) {
-	str, ok := i.(string)
-	if ok {
+	if str, ok := i.(string); ok {
 		return len(str), nil
 	}
 	return 0, errors.New("не удалось привести интерфейс к строке")
