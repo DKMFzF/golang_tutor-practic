@@ -1,0 +1,6 @@
+ID:27; | Email:user27@example.com
+Activity Log:
+1. [log IN] at
+%!(EXTRA time.Time=2025-02-19 21:17:19.9312368 +0700 +07 m=+0.001004901)2. [log RECORD] at
+%!(EXTRA time.Time=2025-02-19 21:17:19.9312368 +0700 +07 m=+0.001004901)3. [log IN] at
+%!(EXTRA time.Time=2025-02-19 21:17:19.9312368 +0700 +07 m=+0.001004901)

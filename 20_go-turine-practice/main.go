@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"os"
 	"time"
 )
 
@@ -36,7 +37,7 @@ func (u User) getActiviteInfo() string {
 func main() {
 	users := generationUsers(100)
 	for _, user := range users {
-		fmt.Println(user.getActiviteInfo())
+		saveUsersInfo(user)
 	}
 }
 
@@ -65,4 +66,15 @@ func generationLogs(count int) []logItem {
 	}
 
 	return logs
+}
+
+func saveUsersInfo(user User) error {
+	fmt.Println("WRATING FILE FOR USER ID: %d\n", user.id)
+	filname := fmt.Sprintf("logs/uid_%d.txt", user.id)
+	file, err := os.OpenFile(filname, os.O_RDWR|os.O_CREATE, 0644)
+	if err != nil {
+		return err
+	}
+	_, err = file.WriteString(user.getActiviteInfo())
+	return nil
 }
