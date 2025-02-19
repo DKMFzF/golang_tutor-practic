@@ -11,7 +11,13 @@ func main() {
 	go fmt.Println("1")
 	go fmt.Println("1")
 
-	time.Sleep(time.Second) // блокировка main
+	// использование анонимных функций в go-рутинах
+	go func() {
+		time.Sleep(time.Second)
+		fmt.Println("2")
+	}()
+
+	time.Sleep(time.Second + time.Second) // блокировка main
 
 	// после идёт выполнение друхи go-рутин
 
