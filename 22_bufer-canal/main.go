@@ -31,12 +31,17 @@ func main() {
 
 	close(msg2)
 
-	for {
-		if value, ok := <-msg2; !ok {
-			fmt.Println("chanel closed")
-			break
-		} else {
-			fmt.Println(value)
-		}
+	// for {
+	// 	if value, ok := <-msg2; !ok {
+	// 		fmt.Println("chanel closed")
+	// 		break
+	// 	} else {
+	// 		fmt.Println(value)
+	// 	}
+	// }
+
+	// более удобный способ
+	for m := range msg2 {
+		fmt.Println(m)
 	}
 }
