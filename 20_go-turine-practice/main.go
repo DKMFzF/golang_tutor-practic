@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"sync"
 	"time"
 )
 
@@ -36,9 +37,22 @@ func (u User) getActiviteInfo() string {
 
 func main() {
 	users := generationUsers(100)
+
+	t := time.Now()
+
+	// добавляем wait group
+	wg := &sync.WaitGroup{} // нужен для ожидания завершения всех горутин
+
 	for _, user := range users {
-		saveUsersInfo(user)
+		wg.Add(1)
+		go saveUsersInfo(user, wg)
 	}
+
+	// делам блокировку для го рутины main()
+	wg.Wait() // это счетчик который блокируется, если есть хоть одна задча
+	// блокирует до того момента пока счетчик не станет 0 (обночляет счетчик в wg.Add())
+
+	fmt.Println("TIME ELEPSED:", time.Since(t).String())
 }
 
 func generationUsers(count int) []User {
@@ -68,7 +82,8 @@ func generationLogs(count int) []logItem {
 	return logs
 }
 
-func saveUsersInfo(user User) error {
+func saveUsersInfo(user User, wg *sync.WaitGroup) error {
+	time.Sleep(time.Microsecond * 10)
 	fmt.Println("WRATING FILE FOR USER ID: %d\n", user.id)
 	filname := fmt.Sprintf("logs/uid_%d.txt", user.id)
 	file, err := os.OpenFile(filname, os.O_RDWR|os.O_CREATE, 0644)
@@ -76,5 +91,11 @@ func saveUsersInfo(user User) error {
 		return err
 	}
 	_, err = file.WriteString(user.getActiviteInfo())
+	if err != nil {
+		return err
+	}
+
+	wg.Done() // нужен для оповезения Wait Group что go-рутина выполнена
+
 	return nil
 }
