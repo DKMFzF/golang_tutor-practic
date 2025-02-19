@@ -34,18 +34,10 @@ func (u User) getActiviteInfo() string {
 }
 
 func main() {
-	u := User{
-		id:    1,
-		emial: "flim.win@yandex.ru",
-		logs: []logItem{
-			{acriong[0], time.Now()},
-			{acriong[2], time.Now()},
-			{acriong[1], time.Now()},
-			{acriong[0], time.Now()},
-		},
+	users := generationUsers(100)
+	for _, user := range users {
+		fmt.Println(user.getActiviteInfo())
 	}
-
-	fmt.Println(u.getActiviteInfo())
 }
 
 func generationUsers(count int) []User {
