@@ -9,8 +9,8 @@ import (
 )
 
 func mainPage(res http.ResponseWriter, req *http.Request) {
-	res.Write([]byte("Привет!"))
 	res.WriteHeader(http.StatusAccepted)
+	res.Write([]byte("Привет!"))
 }
 
 func apiRoute(res http.ResponseWriter, req *http.Request) {
@@ -79,14 +79,23 @@ func allMethod(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("3"))
 }
 
+// middlewares
+
+func middleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("%v", r.Method)
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 	mux := http.NewServeMux()
 
-	go mux.HandleFunc(`/api/`, apiRoute)
-	go mux.HandleFunc(`/`, mainPage)
-	go mux.HandleFunc(`/post-test`, postReq)
-	go mux.HandleFunc(`/json`, jsonHandler)
-	go mux.HandleFunc(`/all`, allMethod)
+	mux.HandleFunc(`/api/`, apiRoute)
+	mux.Handle(`/`, middleware(http.HandlerFunc(mainPage)))
+	mux.HandleFunc(`/post-test`, postReq)
+	mux.HandleFunc(`/json`, jsonHandler)
+	mux.HandleFunc(`/all`, allMethod)
 
 	log.Print("Start server...")
 	if err := http.ListenAndServe(`:8080`, mux); err != nil && err != http.ErrServerClosed {
