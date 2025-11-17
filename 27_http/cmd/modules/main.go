@@ -97,13 +97,16 @@ func redirect(w http.ResponseWriter, r *http.Request) {
 func main() {
 	mux := http.NewServeMux()
 
+	staticDir := http.FileServer(http.Dir(`./static`))
+	mux.Handle(`GET /static/`, http.StripPrefix(`/static/`, staticDir))
+
 	mux.Handle(`GET /api/`, http.HandlerFunc(apiRoute))
 	mux.Handle(`/`, middleware(http.HandlerFunc(mainPage)))
 	mux.Handle(`POST /post-test`, http.HandlerFunc(postReq))
 	mux.Handle(`GET /json`, http.HandlerFunc(jsonHandler))
 	mux.Handle(`GET /all`, http.HandlerFunc(allMethod))
 	mux.Handle(`GET /redirect`, http.HandlerFunc(redirect))
-	mux.Handle(`/redirect-std`, http.RedirectHandler(`/api`, http.StatusMovedPermanently))
+	mux.Handle(`GET /redirect-std`, http.RedirectHandler(`/api`, http.StatusMovedPermanently))
 
 	srv := &http.Server{
 		Addr:    `:8080`,
