@@ -88,6 +88,10 @@ func middleware(next http.Handler) http.Handler {
 	})
 }
 
+func redirect(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, `/api`, http.StatusMovedPermanently)
+}
+
 func main() {
 	mux := http.NewServeMux()
 
@@ -96,6 +100,8 @@ func main() {
 	mux.HandleFunc(`/post-test`, postReq)
 	mux.HandleFunc(`/json`, jsonHandler)
 	mux.HandleFunc(`/all`, allMethod)
+
+	mux.HandleFunc(`/redirect`, redirect)
 
 	log.Print("Start server...")
 	if err := http.ListenAndServe(`:8080`, mux); err != nil && err != http.ErrServerClosed {
