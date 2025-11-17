@@ -2,10 +2,12 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"os"
 )
 
 func mainPage(res http.ResponseWriter, req *http.Request) {
@@ -95,16 +97,22 @@ func redirect(w http.ResponseWriter, r *http.Request) {
 func main() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc(`/api/`, apiRoute)
+	mux.Handle(`GET /api/`, http.HandlerFunc(apiRoute))
 	mux.Handle(`/`, middleware(http.HandlerFunc(mainPage)))
-	mux.HandleFunc(`/post-test`, postReq)
-	mux.HandleFunc(`/json`, jsonHandler)
-	mux.HandleFunc(`/all`, allMethod)
+	mux.Handle(`POST /post-test`, http.HandlerFunc(postReq))
+	mux.Handle(`GET /json`, http.HandlerFunc(jsonHandler))
+	mux.Handle(`GET /all`, http.HandlerFunc(allMethod))
+	mux.Handle(`GET /redirect`, http.HandlerFunc(redirect))
+	mux.Handle(`/redirect-std`, http.RedirectHandler(`/api`, http.StatusMovedPermanently))
 
-	mux.HandleFunc(`/redirect`, redirect)
+	srv := &http.Server{
+		Addr:    `:8080`,
+		Handler: mux,
+	}
 
 	log.Print("Start server...")
-	if err := http.ListenAndServe(`:8080`, mux); err != nil && err != http.ErrServerClosed {
-		panic(err)
+
+	if err := srv.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
+		os.Exit(1)
 	}
 }
