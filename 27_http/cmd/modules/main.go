@@ -95,6 +95,22 @@ func redirect(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	log.Print("Start server...")
+
+	if err := run(); !errors.Is(err, http.ErrServerClosed) {
+		os.Exit(1)
+	}
+}
+
+func run() error {
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: handlers(),
+	}
+	return srv.ListenAndServe()
+}
+
+func handlers() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	staticDir := http.FileServer(http.Dir(`./static`))
@@ -108,14 +124,5 @@ func main() {
 	mux.Handle(`GET /redirect`, http.HandlerFunc(redirect))
 	mux.Handle(`GET /redirect-std`, http.RedirectHandler(`/api`, http.StatusMovedPermanently))
 
-	srv := &http.Server{
-		Addr:    `:8080`,
-		Handler: mux,
-	}
-
-	log.Print("Start server...")
-
-	if err := srv.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
-		os.Exit(1)
-	}
+	return mux
 }
