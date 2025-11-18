@@ -127,6 +127,8 @@ func handlers() *http.ServeMux {
 	return mux
 }
 
+// тестовая фунция
+
 func Sum(v ...int) int {
 	var sum int
 	for _, v := range v {
