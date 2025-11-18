@@ -69,6 +69,29 @@ func TestAddNew(t *testing.T) {
 			},
 			WantErr: ErrRelationshipAlreadyExists,
 		},
+		//{
+		//NameTest: "#3",
+		//Want: &Family{
+		//Members: map[Relationship]Person{
+		//Father: {
+		//FirstName: "Kirill",
+		//LastName:  "Doroshev",
+		//Age:       20,
+		//},
+		//},
+		//},
+		//NewPersons: []*TestPersonList{
+		//{
+		//TestRole: GrandFather,
+		//TestPerson: &Person{
+		//FirstName: "Dima",
+		//LastName:  "Hueputov",
+		//Age:       20,
+		//},
+		//},
+		//},
+		//WantErr: ErrRelationshipAlreadyExists,
+		//},
 	}
 
 	for _, v := range familyTest {
