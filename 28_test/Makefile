@@ -5,7 +5,7 @@ run:
 
 test-all:
 	@echo "[ Start all test in project... ]"
-	@go test -v -count 1 ./... 
+	@go test -count 1 ./... 
 	@echo "[ Finish ]"
 
 test-all-cache:
